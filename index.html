@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="student resource.jpg" type="image/x-icon">
     <title>Student Resource Portal</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js"></script>
     <style>
         /* Reset and base styles */
         * {
@@ -800,6 +798,82 @@
                 font-size: 0.95rem;
             }
         }
+
+        /* Result form styles */
+        .result-form-wrapper {
+            max-width: 800px;
+            margin: 2rem auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .row {
+            display: flex;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .col-lg-3 {
+            flex: 0 0 25%;
+            padding: 0 15px;
+        }
+
+        .col-lg-5 {
+            flex: 0 0 41.666667%;
+            padding: 0 15px;
+        }
+
+        .col-lg-12 {
+            flex: 0 0 100%;
+            padding: 0 15px;
+        }
+
+        .control-label {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background-color: #1a56db;
+            color: white;
+            padding: 0.6rem 2rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #1e40af;
+        }
+
+        /* Mobile responsive adjustments */
+        @media screen and (max-width: 768px) {
+            .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .col-lg-3, .col-lg-5 {
+                flex: 0 0 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .control-label {
+                margin-bottom: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -817,7 +891,7 @@
         
         <!-- Add the result form section -->
         <div id="result-form" style="display: none;" class="result-form-container">
-            <form action="https://itms.ctevt.org.np:5580/search_results" autocomplete="off" id="frmCheckResults" method="post" target="_blank">
+            <form action="https://itms.ctevt.org.np:5580/search_results" autocomplete="off" id="frmCheckResults" method="post" name="frmCheckResults" target="_blank">
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Examination Year:</label>
@@ -858,7 +932,7 @@
                     </div>
                     
                     <div class="form-submit">
-                        <button type="submit" class="submit-btn">Search Result</button>
+                        <input type="submit" name="submit" value="Search" class="btn btn-primary">
                     </div>
                 </div>
             </form>
@@ -868,13 +942,13 @@
     <!-- Course Navigation - Initially hidden, shown when course selected -->
     <div class="course-nav" id="course-nav">
         <div class="course-nav-container">
-            <a href="#" class="course-nav-item" data-course="ce" onclick="showSemesters('ce', 'Computer Engineering')">DCOM</a>
-            <a href="#" class="course-nav-item" data-course="it" onclick="showSemesters('it', 'Information Technology')">DIT</a>
-            <a href="#" class="course-nav-item" data-course="civil" onclick="showSemesters('civil', 'Civil Engineering')">DCE</a>
-            <a href="#" class="course-nav-item" data-course="ee" onclick="showSemesters('ee', 'Electrical Engineering')">DEE</a>
-            <a href="#" class="course-nav-item" data-course="geomatics" onclick="showSemesters('geomatics', 'Geomatics Engineering')">DGE</a>
-            <a href="#" class="course-nav-item" data-course="arch" onclick="showSemesters('arch', 'Architecture Engineering')">DAE</a>
-            <a href="#" class="course-nav-item" data-course="mech" onclick="showSemesters('mech', 'Mechanical Engineering')">DME</a>
+            <a href="#" class="course-nav-item" data-course="dcom" onclick="showSemesters('dcom', 'Computer Engineering')">DCOM</a>
+            <a href="#" class="course-nav-item" data-course="it" onclick="showSemesters('it', 'Information Technology')">IT</a>
+            <a href="#" class="course-nav-item" data-course="dce" onclick="showSemesters('dce', 'Civil Engineering')">DCE</a>
+            <a href="#" class="course-nav-item" data-course="dee" onclick="showSemesters('dee', 'Electrical Engineering')">DEE</a>
+            <a href="#" class="course-nav-item" data-course="dge" onclick="showSemesters('dge', 'Geomatics Engineering')">DGE</a>
+            <a href="#" class="course-nav-item" data-course="dar" onclick="showSemesters('dar', 'Architecture Engineering')">DAE</a>
+            <a href="#" class="course-nav-item" data-course="dme" onclick="showSemesters('dme', 'Mechanical Engineering')">DME</a>
         </div>
     </div>
     
@@ -889,7 +963,7 @@
         <div id="content-area">
             <h2 class="section-title">Select a Course</h2>
             <div class="card-grid">
-                <div class="card" onclick="showSemesters('ce', 'Computer Engineering')">
+                <div class="card" onclick="showSemesters('dcom', 'Computer Engineering')">
                     <h3 class="card-title">Computer Engineering</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
@@ -897,23 +971,23 @@
                     <h3 class="card-title">Information Technology</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
-                <div class="card" onclick="showSemesters('civil', 'Civil Engineering')">
+                <div class="card" onclick="showSemesters('dce', 'Civil Engineering')">
                     <h3 class="card-title">Civil Engineering</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
-                <div class="card" onclick="showSemesters('ee', 'Electrical Engineering')">
+                <div class="card" onclick="showSemesters('dee', 'Electrical Engineering')">
                     <h3 class="card-title">Electrical Engineering</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
-                <div class="card" onclick="showSemesters('geomatics', 'Geomatics Engineering')">
+                <div class="card" onclick="showSemesters('dge', 'Geomatics Engineering')">
                     <h3 class="card-title">Geomatics Engineering</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
-                <div class="card" onclick="showSemesters('arch', 'Architecture Engineering')">
+                <div class="card" onclick="showSemesters('dar', 'Architecture Engineering')">
                     <h3 class="card-title">Architecture Engineering</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
-                <div class="card" onclick="showSemesters('mech', 'Mechanical Engineering')">
+                <div class="card" onclick="showSemesters('dme', 'Mechanical Engineering')">
                     <h3 class="card-title">Mechanical Engineering</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
@@ -1027,20 +1101,179 @@
             },
            'second-sem-notes': {
                 'Applied Mechanics': [
-                    { 
-                        name: '2080 to 2076 Solutions',
-                        filename: 'https://drive.google.com/file/d/1qCkU4mX6tXZWh295I3cC8eNzkogLKRqh/preview'
+                    {
+                     name: 'Notes',
+                     filename: 'https://drive.google.com/file/d/1t-mS43nBJZmlFbTcgNDnn6YQ2NxQV2q_/preview'
                     }
-                ],
-           }
+             ],
+                'Engineering Mathematics II': [
+            // Add more subjects
+        ]
+    },
+    'second-sem-questions': {
+        'Applied Mechanics': [
+            // Second semester shared question papers
+        ]
+    }
         };
         // Then modify your resources object to reference shared resources
         const resources = {
             
             // Other unique resources
-            'it-1-notes': [
-                { name: 'IT Fundamentals', filename: 'resources/it/sem1/it_fundamentals.pdf' }
+            'dce-3-notes': {
+            'Engineering Mathematics III':[
+                {
+                    name: 'Set Solutions',
+                    filename: 'https://drive.google.com/file/d/1sUGQDTI7H34vP06ahHjhJCZ5gaf6Z7Qw/preview'
+                },
+                {
+                    name: '2081-2078 Solutions',
+                    filename: 'https://drive.google.com/file/d/1KQCtKcssDFelPo58lC2y0Y9jnwq0jlnL/preview'
+                }
+            ],
+            'Building Material':[
+                {
+                    name: 'Notes',
+                    filename: 'https://drive.google.com/file/d/1tfyGsdZiremhnYGxmZ-fTyInEmTOt7V-/preview'
+                },
+                {
+                    name: 'Important Theory',
+                    filename: 'https://drive.google.com/file/d/1ISNQ_wqzdP55uYefEbwJZZlHrfbdwOvr/preview'
+                }
+            ],
+            'Engineering Material':[
+                {
+                    name: 'Notes',
+                    filename: 'https://drive.google.com/file/d/1ua31MhMFeJwJUuj_caG5jJqwb9FkXyJ5/preview'
+                },
+                {
+                    name: 'Important Questions',
+                    filename: 'https://drive.google.com/file/d/1ACzeN0VotCBme6SbpH_SHNX9MHSCtP1P/preview'
+                }
+            ],
+            'Fluid Mechanics and Hydraulics':[
+                {
+                    name: 'Practical',
+                    filename: 'https://drive.google.com/file/d/15ebq29ds1zZb9H9T1TkGxinCh1miGfBq/preview'
+                },
+                {
+                    name: 'Notes',
+                    filename: 'https://drive.google.com/file/d/1wOm5sLGKwKNwwuEQjLjsVlomUM5x4L8i/preview'
+                },
+                {
+                    name: 'Important Questions & Numericals',
+                    filename: 'https://drive.google.com/file/d/1bM9OrwxmAA1tsFuc4P-NU3clB7Eu0MX0/preview'
+                }
+            ],
+            'Surveying I':[
+                {
+                    name: 'Notes',
+                    filename: 'https://drive.google.com/file/d/1KHgv86jdfeNSCXnm7rriW1fZY2R2kgXb/preview'
+                },
+                {
+                    name: 'Practical',
+                    filename: 'https://drive.google.com/file/d/1PgJBnrF3zRxaFQYlYZeJbF0GLlqwHkNG/preview'
+                },
+                {
+                    name: 'Numericals',
+                    filename: 'https://drive.google.com/file/d/1W0VN8-Hj5OtOEb2oEFkyAfpaetnp299b/preview'
+                }
+            ],
+            'Applied Mechanics':[
+                {
+                    name: 'Notes',
+                    filename: 'https://drive.google.com/file/d/1pQ17pkDYnCEDpx3TIMz3frm3VRu4Jmug/preview'
+                },
+                {
+                    name: 'Notes 2',
+                    filename: 'https://drive.google.com/file/d/16ewjAp16Y-hLd7icDS4ABYmgOUJtx6PJ/preview'
+                },
+                {
+                    name: '2081-2078 Solutions',
+                    filename: 'https://drive.google.com/file/d/18Lmo3eUD7PYrFETMYHLzPOeImUJ6n0tK/preview'
+                }
+            ],
+            'Computer Aided Drafting':[
+                {
+                    name: 'Notes',
+                    filename: 'https://drive.google.com/file/d/1yw1_AMHHy3-jDGiIpHz8G3KDGau0FIic/preview'
+                },
+                {
+                    name: 'Notes 2',
+                    filename: 'https://drive.google.com/file/d/1Qh1wAA-ksZDE13Nvp2xeSiFlY8DIYlYz/preview'
+                },
+                {
+                    name: 'Important Question Solutions',
+                    filename: 'https://drive.google.com/file/d/1ZuOT6XMmLt141yKHL7D5vLKTbdf-gKEk/preview'
+                }
+            ],
+            'Basic Hydraulics':[
+                {
+                    name: 'Notes',
+                    filename: 'https://drive.google.com/file/d/1wOm5sLGKwKNwwuEQjLjsVlomUM5x4L8i/preview'
+                },
+                {
+                    name: 'Important Questions & Numericals',
+                    filename: 'https://drive.google.com/file/d/1bM9OrwxmAA1tsFuc4P-NU3clB7Eu0MX0/preview'
+                }
             ]
+            },
+            'dce-3-questions': {
+                'Building Construction':[
+                    {
+                        name: 'Model Questions',
+                        filename: 'https://drive.google.com/file/d/13U10BJu02Lbq1N7nm9COjSJT6RiqG-2P/preview'
+                    },
+                    {
+                        name: '2081-2078 Questions',
+                        filename: 'https://drive.google.com/file/d/1v-ZQvWtRRrby0muGr8IHoR0UDMQAmHW-/preview'
+                    }
+                ],
+                'Engineering Mathematics III':[
+                    {
+                        name: '2081-2069 Questions',
+                        filename: 'https://drive.google.com/file/d/1OV0FDWlDVqO-43wuM6Lm0u0QGHsjlMUJ/preview'
+                    },
+                    {
+                        name: 'Model Questions',
+                        filename: 'https://drive.google.com/file/d/1gkiwkB1BH5UvS3baLbbEDIK7xvrTMWMu/preview'
+                    }
+                ],
+                'Surveying I':[
+                    {
+                        name: '2081-2078 Questions',
+                        filename: 'https://drive.google.com/file/d/1vO1wbDJTrI1BJ8UkQbrF6uUgAcfrwWnN/preview'
+                    }
+                ],
+                'Engineering Material':[
+                    {
+                        name: '2081-2073 Questions',
+                        filename: 'https://drive.google.com/file/d/1LZAbCe2RAIkZjXPMvcDkCMa54P6WMoU4/preview'
+                    }
+                ],
+                'Fluid Mechanics/Basic Hydraulics':[
+                    {
+                        name: '2081-2078 Questions',
+                        filename: 'https://drive.google.com/file/d/1jOGM0vr4ZUf_E4KK6mK99Fckb2-J7aNq/preview'
+                    }
+                ],
+                'Computer Aided Drafting':[
+                    {
+                        name: '2079,2078 Questions',
+                        filename: 'https://drive.google.com/file/d/17K7V2RoJsmMdO2A7OCmTXFjghFvKA-TS/preview'
+                    }
+                ],
+                'Applied Mechanics':[
+                    {
+                        name: 'Question Set',
+                        filename: 'https://drive.google.com/file/d/1m2rZYYm5CgwaNU2hd9E96qF42eL9QH23/preview'
+                    },
+                    {
+                        name: '2081-2078 Questions',
+                        filename: 'https://drive.google.com/file/d/1sI4E9_dU-AIc_2oAeoeZbwQOGOCZSudy/preview'
+                    }
+                    ]
+            },
         };
 
         // Toggle between notice board and course navigation
@@ -1105,7 +1338,7 @@
                 <section class="content-section">
                     <h2 class="section-title">Courses</h2>
                     <div class="card-grid">
-                        <div class="card" onclick="showSemesters('ce', 'Computer Engineering')">
+                        <div class="card" onclick="showSemesters('dcom', 'Computer Engineering')">
                             <h3 class="card-title">Computer Engineering</h3>
                             <p class="card-description">Access notes and question papers</p>
                         </div>
@@ -1113,23 +1346,23 @@
                             <h3 class="card-title">Information Technology</h3>
                             <p class="card-description">Access notes and question papers</p>
                         </div>
-                        <div class="card" onclick="showSemesters('civil', 'Civil Engineering')">
+                        <div class="card" onclick="showSemesters('dce', 'Civil Engineering')">
                             <h3 class="card-title">Civil Engineering</h3>
                             <p class="card-description">Access notes and question papers</p>
                         </div>
-                        <div class="card" onclick="showSemesters('ee', 'Electrical Engineering')">
+                        <div class="card" onclick="showSemesters('dee', 'Electrical Engineering')">
                             <h3 class="card-title">Electrical Engineering</h3>
                             <p class="card-description">Access notes and question papers</p>
                         </div>
-                        <div class="card" onclick="showSemesters('geomatics', 'Geomatics Engineering')">
+                        <div class="card" onclick="showSemesters('dge', 'Geomatics Engineering')">
                             <h3 class="card-title">Geomatics Engineering</h3>
                             <p class="card-description">Access notes and question papers</p>
                         </div>
-                        <div class="card" onclick="showSemesters('arch', 'Architecture Engineering')">
+                        <div class="card" onclick="showSemesters('dar', 'Architecture Engineering')">
                             <h3 class="card-title">Architecture Engineering</h3>
                             <p class="card-description">Access notes and question papers</p>
                         </div>
-                        <div class="card" onclick="showSemesters('mech', 'Mechanical Engineering')">
+                        <div class="card" onclick="showSemesters('dme', 'Mechanical Engineering')">
                             <h3 class="card-title">Mechanical Engineering</h3>
                             <p class="card-description">Access notes and question papers</p>
                         </div>
@@ -1211,62 +1444,69 @@
         
         // Show resources for the selected type
         function showResources(resourceType) {
-            currentState.resourceType = resourceType;
-            currentState.currentPdf = null;
-            currentState.currentPdfTitle = null;
-            
-            updateBreadcrumb();
-            
-            // Create the resource key
-            const resourceKey = `${currentState.course}-${currentState.semester}-${resourceType}`;
-            
-            // Check if this course/semester uses shared resources
-            let resourceMap = resources[resourceKey] || {};
-            
-            // If no specific resources found, check for shared resources
-            if (Object.keys(resourceMap).length === 0) {
-                const sharedKey = `first-sem-${resourceType}`;
-                if (sharedResources[sharedKey]) {
-                    resourceMap = sharedResources[sharedKey];
-                }
-            }
-            
-            let resourcesHTML = '';
-            if (Object.keys(resourceMap).length === 0) {
-                resourcesHTML = '<p>No resources available yet.</p>';
-            } else {
-                resourcesHTML = '<div class="subject-resources">';
-                for (const [subject, pdfs] of Object.entries(resourceMap)) {
-                    resourcesHTML += `
-                        <div class="subject-card">
-                            <div class="subject-header">
-                                <h3 class="subject-title">${subject}</h3>
-                                <div class="subject-count">${pdfs.length} files</div>
-                            </div>
-                            <div class="pdf-list">
-                                ${pdfs.map(pdf => `
-                                    <a href="#" class="pdf-link" onclick="viewPdf('${pdf.filename}', '${pdf.name}')">
-                                        <span class="pdf-icon">📄</span>
-                                        <span class="pdf-name">${pdf.name}</span>
-                                    </a>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                }
-                resourcesHTML += '</div>';
-            }
-            
-            document.getElementById('content-area').innerHTML = `
-                <div class="header-with-back">
-                    <a href="#" class="back-button" onclick="showResourceTypes('${currentState.semester}')">
-                        ← Back to Resources
-                    </a>
-                    <h2 class="section-title">${currentState.courseName} - Semester ${currentState.semester} - ${resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}</h2>
+    currentState.resourceType = resourceType;
+    currentState.currentPdf = null;
+    currentState.currentPdfTitle = null;
+    
+    updateBreadcrumb();
+    
+    // Create the resource key
+    const resourceKey = `${currentState.course}-${currentState.semester}-${resourceType}`;
+    
+    // Check semester
+    const isFirstSemester = currentState.semester === '1';
+    const isSecondSemester = currentState.semester === '2';
+    
+    // Get resources based on semester
+    let resourceMap = resources[resourceKey] || {};
+    if (Object.keys(resourceMap).length === 0) {
+        if (isFirstSemester) {
+            const sharedKey = `first-sem-${resourceType}`;
+            resourceMap = sharedResources[sharedKey] || {};
+        } else if (isSecondSemester) {
+            const sharedKey = `second-sem-${resourceType}`;
+            resourceMap = sharedResources[sharedKey] || {};
+        }
+    }
+    
+    // Generate HTML
+    let resourcesHTML = '';
+    if (Object.keys(resourceMap).length === 0) {
+        resourcesHTML = '<p class="no-resources">No resources available yet.</p>';
+    } else {
+        resourcesHTML = '<div class="subject-resources">';
+        for (const [subject, pdfs] of Object.entries(resourceMap)) {
+            resourcesHTML += `
+                <div class="subject-card">
+                    <div class="subject-header">
+                        <h3 class="subject-title">${subject}</h3>
+                        <div class="subject-count">${pdfs.length} ${pdfs.length === 1 ? 'file' : 'files'}</div>
+                    </div>
+                    <div class="pdf-list">
+                        ${pdfs.map(pdf => `
+                            <a href="#" class="pdf-link" onclick="viewPdf('${pdf.filename}', '${pdf.name}')">
+                                <span class="pdf-icon">📄</span>
+                                <span class="pdf-name">${pdf.name}</span>
+                            </a>
+                        `).join('')}
+                    </div>
                 </div>
-                ${resourcesHTML}
             `;
         }
+        resourcesHTML += '</div>';
+    }
+    
+    // Update content area
+    document.getElementById('content-area').innerHTML = `
+        <div class="header-with-back">
+            <a href="#" class="back-button" onclick="showResourceTypes('${currentState.semester}')">
+                ← Back to Resources
+            </a>
+            <h2 class="section-title">${currentState.courseName} - Semester ${currentState.semester} - ${resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}</h2>
+        </div>
+        ${resourcesHTML}
+    `;
+}
         
         // View PDF with Google Drive viewer
         function viewPdf(pdfPath, title) {
@@ -1386,7 +1626,8 @@
                 navigator.plugins['Chrome PDF Viewer'].enabled = false;
             }
         }
-        function toggleResultForm() {
+        // Update the toggleResultForm function
+function toggleResultForm() {
     currentState = {
         course: null,
         courseName: null,
@@ -1407,10 +1648,16 @@
             <h2 class="section-title">Check Your Result</h2>
         </div>
         <div class="result-form-wrapper">
-            <form action="https://itms.ctevt.org.np:5580/search_results" autocomplete="off" id="frmCheckResults" method="post" target="_blank">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Examination Year:</label>
+            <form action="https://itms.ctevt.org.np:5580/search_results" 
+                  method="POST" 
+                  target="_blank" 
+                  id="frmCheckResults" 
+                  name="frmCheckResults" 
+                  autocomplete="off"
+                  onsubmit="return validateAndSubmit(event)">
+                <div class="row">
+                    <label class="col-lg-3 control-label">Examination Year:</label>
+                    <div class="col-lg-3">
                         <select class="form-control" id="src_year" name="src_year" required>
                             <option value="">-- Select --</option>
                             <option value="2081">2081</option>
@@ -1427,25 +1674,35 @@
                             <option value="2070">2070</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Level:</label>
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-lg-3 control-label">Level:</label>
+                    <div class="col-lg-3">
                         <select name="src_level" id="src_level" class="form-control" required>
                             <option value="">-- Select --</option>
                             <option value="2">Pre-diploma</option>
                             <option value="3">Diploma/PCL</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Symbol Number:</label>
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-lg-3 control-label">Symbol Number:</label>
+                    <div class="col-lg-5">
                         <input type="text" name="exam_symbol_number" id="exam_symbol_number" class="form-control" placeholder="e.g. 1000234" required>
                     </div>
-                    <div class="form-group">
-                        <label>Date of Birth (B.S.):</label>
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-lg-3 control-label">Date of Birth (B.S.):</label>
+                    <div class="col-lg-5">
                         <input type="text" name="dob" id="dob" placeholder="Date Format: YYYY-MM-DD" class="form-control" required>
                     </div>
-                    <div class="form-submit">
-                        <button type="submit" class="submit-btn">Search Result</button>
-                    </div>
+                </div>
+                <br>
+                <div class="col-lg-12 text-center">
+                    <input type="submit" name="submit" value="Search" class="btn btn-primary">
                 </div>
             </form>
         </div>
