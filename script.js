@@ -39,7 +39,7 @@ const sharedResources = {
             },
             {
                 name: '2080 to 2076 Solutions',
-                filename: 'https://drive.google.com/file/d/1nAJWnMvb1ipME1Un0hf7XNPDBuhsGt-h/preview'
+                filename: 'https://drive.google.com/file/d/1A33tLdtRFdNrmvXvjSu33Bo523svsVbC/preview'
             }
         ],
         'Computer Application': [
@@ -360,6 +360,18 @@ const resources = {
                 filename: 'https://drive.google.com/file/d/1sI4E9_dU-AIc_2oAeoeZbwQOGOCZSudy/preview'
             }
             ]
+    },
+    'dit-3-notes': {
+        'C-Programming':[
+            {
+                name: 'Notes',
+                filename: 'https://drive.google.com/file/d/1fIXSt3o3V7cutRDkAdPATqULfNYvmKhv/view'
+            },
+            {
+                name: '2080 Solution',
+                filename: 'https://drive.google.com/file/d/1jRLS-iOwZW88dTsWwfCiVcl8Wh6I7-NI/view'
+            }
+        ]
     },
 };
 
