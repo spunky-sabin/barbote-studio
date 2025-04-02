@@ -441,7 +441,7 @@ function showHomePage() {
                     <h3 class="card-title">Computer Engineering</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
-                <div class="card" onclick="showSemesters('it', 'Information Technology')">
+                <div class="card" onclick="showSemesters('dit', 'Information Technology')">
                     <h3 class="card-title">Information Technology</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
@@ -997,7 +997,7 @@ function initSearch() {
                 if (subject.toLowerCase().includes(searchTerm)) {
                     const courseName = {
                         'dcom': 'Computer Engineering',
-                        'it': 'Information Technology',
+                        'dit': 'Information Technology',
                         'dce': 'Civil Engineering',
                         'dee': 'Electrical Engineering',
                         'dge': 'Geomatics Engineering',
