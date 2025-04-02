@@ -373,6 +373,14 @@ const resources = {
             }
         ]
     },
+     'dit-3-questions': {
+        'C-Programming':[
+            {
+                name: '2080-2081 Questions',
+                filename: 'https://drive.google.com/file/d/1Lufgp4y9mjDyEJDec2HjHruWT7UdgOj4/preview'
+            },
+        ]
+     },
 };
 
 // Toggle between notice board and course navigation
