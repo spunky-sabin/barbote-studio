@@ -86,7 +86,7 @@ const sharedResources = {
         'Engineering Chemistry I(New)': [
             {
                 name: '2081 Question (New)',
-                filename: 'https://drive.google.com/file/d/1S0a71BqDSPXLR9I8mQ5CL7XEraQphChJ/view?usp=drive_link'
+                filename: 'https://drive.google.com/file/d/1S0a71BqDSPXLR9I8mQ5CL7XEraQphChJ/preview'
             },
             {
                 name: '2079-2081 Questions',
