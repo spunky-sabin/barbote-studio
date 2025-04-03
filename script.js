@@ -330,6 +330,10 @@ const resources = {
             {
                 name: '2081-2078 Questions',
                 filename: 'https://drive.google.com/file/d/1vO1wbDJTrI1BJ8UkQbrF6uUgAcfrwWnN/preview'
+            },
+            {
+                name: '2081 Question (new)',
+                filename : 'https://drive.google.com/file/d/15drjfRK1vhvnWHhu9pdvD1BgqFtnCmfM/view'
             }
         ],
         'Engineering Material':[
