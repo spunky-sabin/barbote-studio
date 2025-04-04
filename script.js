@@ -495,9 +495,33 @@ function showResourceTypes(semesterId) {
     currentState.resourceType = null;
     currentState.currentPdf = null;
     currentState.currentPdfTitle = null;
-    
+
     updateBreadcrumb();
-    
+
+    // Get both notes and questions resources
+    const notesKey = `${currentState.course}-${semesterId}-notes`;
+    const questionsKey = `${currentState.course}-${semesterId}-questions`;
+
+    // Check if first or second semester for shared resources
+    const isFirstSemester = semesterId === '1';
+    const isSecondSemester = semesterId === '2';
+
+    let notesMap = resources[notesKey] || {};
+    let questionsMap = resources[questionsKey] || {};
+
+    if (isFirstSemester) {
+        notesMap = sharedResources['first-sem-notes'] || {};
+        questionsMap = sharedResources['first-sem-questions'] || {};
+    } else if (isSecondSemester) {
+        notesMap = sharedResources['second-sem-notes'] || {};
+        questionsMap = sharedResources['second-sem-questions'] || {};
+    }
+
+    // Generate HTML for Notes and Questions
+    const notesHTML = generateResourcesHTML(notesMap, 'Notes');
+    const questionsHTML = generateResourcesHTML(questionsMap, 'Questions');
+
+    // Combine Notes and Questions into one section
     document.getElementById('content-area').innerHTML = `
         <div class="header-with-back">
             <a href="#" class="back-button" onclick="showSemesters('${currentState.course}', '${currentState.courseName}')">
@@ -505,90 +529,37 @@ function showResourceTypes(semesterId) {
             </a>
             <h2 class="section-title">${currentState.courseName} - Semester ${semesterId}</h2>
         </div>
-        <h3 class="section-title">Select Resource Type</h3>
-        <div class="card-grid">
-            <div class="card resource-type-card" onclick="showResources('notes')">
-                <div class="resource-icon">📝</div>
-                <div>
-                    <h3 class="card-title">Notes</h3>
-                    <p class="card-description">Lecture notes and study materials</p>
-                </div>
-            </div>
-            <div class="card resource-type-card" onclick="showResources('questions')">
-                <div class="resource-icon">❓</div>
-                <div>
-                    <h3 class="card-title">Questions</h3>
-                    <p class="card-description">Previous exam papers and practice questions</p>
-                </div>
-            </div>
-        </div>
+        <section class="resources-section">
+            <h3 class="section-title">Notes</h3>
+            ${notesHTML}
+            <h3 class="section-title">Questions</h3>
+            ${questionsHTML}
+        </section>
     `;
 }
 
-// Show resources for the selected type
-function showResources(resourceType) {
-currentState.resourceType = resourceType;
-currentState.currentPdf = null;
-currentState.currentPdfTitle = null;
-
-updateBreadcrumb();
-
-// Create the resource key
-const resourceKey = `${currentState.course}-${currentState.semester}-${resourceType}`;
-
-// Check semester
-const isFirstSemester = currentState.semester === '1';
-const isSecondSemester = currentState.semester === '2';
-
-// Get resources based on semester
-let resourceMap = resources[resourceKey] || {};
-if (Object.keys(resourceMap).length === 0) {
-    if (isFirstSemester) {
-        const sharedKey = `first-sem-${resourceType}`;
-        resourceMap = sharedResources[sharedKey] || {};
-    } else if (isSecondSemester) {
-        const sharedKey = `second-sem-${resourceType}`;
-        resourceMap = sharedResources[sharedKey] || {};
+// Helper function to generate resources HTML
+function generateResourcesHTML(resourceMap, resourceType) {
+    if (Object.keys(resourceMap).length === 0) {
+        return `<p class="no-resources">No ${resourceType.toLowerCase()} available yet.</p>`;
     }
-}
 
-// Generate HTML
-let resourcesHTML = '';
-if (Object.keys(resourceMap).length === 0) {
-    resourcesHTML = '<p class="no-resources">No resources available yet.</p>';
-} else {
-    resourcesHTML = '<div class="subject-resources">';
-    for (const [subject, pdfs] of Object.entries(resourceMap)) {
-        resourcesHTML += `
-            <div class="subject-card">
-                <div class="subject-header">
-                    <h3 class="subject-title">${subject}</h3>
-                    <div class="subject-count">${pdfs.length} ${pdfs.length === 1 ? 'file' : 'files'}</div>
-                </div>
-                <div class="pdf-list">
-                    ${pdfs.map(pdf => `
-                        <a href="#" class="pdf-link" onclick="viewPdf('${pdf.filename}', '${pdf.name}')">
-                            <span class="pdf-icon">📄</span>
-                            <span class="pdf-name">${pdf.name}</span>
-                        </a>
-                    `).join('')}
-                </div>
+    return Object.entries(resourceMap).map(([subject, pdfs]) => `
+        <div class="subject-card">
+            <div class="subject-header">
+                <h3 class="subject-title">${subject}</h3>
+                <div class="subject-count">${pdfs.length} ${pdfs.length === 1 ? 'file' : 'files'}</div>
             </div>
-        `;
-    }
-    resourcesHTML += '</div>';
-}
-
-// Update content area
-document.getElementById('content-area').innerHTML = `
-    <div class="header-with-back">
-        <a href="#" class="back-button" onclick="showResourceTypes('${currentState.semester}')">
-            ← Back to Resources
-        </a>
-        <h2 class="section-title">${currentState.courseName} - Semester ${currentState.semester} - ${resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}</h2>
-    </div>
-    ${resourcesHTML}
-`;
+            <div class="pdf-list">
+                ${pdfs.map(pdf => `
+                    <a href="#" class="pdf-link" onclick="viewPdf('${pdf.filename}', '${pdf.name}')">
+                        <span class="pdf-icon">📄</span>
+                        <span class="pdf-name">${pdf.name}</span>
+                    </a>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
 }
 
 // View PDF with Google Drive viewer
@@ -1118,3 +1089,73 @@ window.onload = initPortal;
 function downloadPdf(url) {
     window.open(url, '_blank');
 }
+
+// Add CSS for resources section
+const style = document.createElement('style');
+style.textContent = `
+.resources-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.resources-section .section-title {
+    margin: 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.subject-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    margin-bottom: 1rem;
+}
+
+.subject-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.subject-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.subject-count {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    background-color: var(--highlight-color);
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+}
+
+.pdf-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pdf-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.2s;
+}
+
+.pdf-link:hover {
+    color: var(--primary-dark);
+}
+
+.pdf-icon {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+}
+`;
+document.head.appendChild(style);
