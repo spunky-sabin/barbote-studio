@@ -266,41 +266,35 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
   
   .card {
     background-color: var(--card-bg);
     border-radius: 8px;
-    box-shadow: 0 2px 8px var(--shadow-color);
     padding: 1.5rem;
-    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
+    text-align: center;
   }
   
   .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px var(--shadow-color);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
     background-color: var(--card-hover);
   }
   
   .card-title {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-    color: var(--text-color);
-  }
-  
-  [data-theme="dark"] .card-title {
-    color: var(--dm-text-color);
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
   }
   
   .card-description {
     color: var(--text-light);
-    font-size: 0.9rem;
-  }
-  
-  [data-theme="dark"] .card-description {
-    color: var(--dm-text-light);
+    font-size: 0.95rem;
   }
   
   /* Header with Back Button */
@@ -419,55 +413,65 @@
     border: none;
   }
   
-  .pdf-viewer-toolbar {
+  /* PDF Viewer Toolbar */
+.pdf-viewer-toolbar {
     display: flex;
-    gap: 0.5rem;
-    padding: 0.75rem;
-    background-color: var(--pdf-toolbar-bg);
-    border-radius: 8px 8px 0 0;
-    margin-top: 1rem;
-    border-bottom: 1px solid var(--border-color);
-  }
-  
-  .pdf-btn {
-    display: flex;
+    justify-content: flex-start;
     align-items: center;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    background-color: var(--card-bg);
-    color: var(--text-color);
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .pdf-btn:hover {
-    background-color: var(--highlight-color);
-  }
-  
-  .pdf-btn.active {
+    gap: 1rem; 
+    padding: 0.75rem 1.5rem;
+    background-color: var(--pdf-toolbar-bg);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Buttons in the toolbar */
+.pdf-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px; /* Increased size */ /* Increased size */ /* Increased size */
+    height: 48px; /* Increased size */ /* Increased size */ /* Increased size */
     background-color: var(--primary-color);
     color: white;
-  }
-  
-  .svg-icon {
-    width: 18px;
-    height: 18px;
-    margin-right: 0.5rem;
-    fill: currentColor;
-  }
-  
-  .svg-icon {
-    fill: var(--text-color);
-  }
-  
-  [data-theme="dark"] .svg-icon {
-    fill: var(--dm-text-color);
-  }
-  
-  /* Loading Overlay */
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.pdf-btn:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.pdf-btn svg {
+    width: 24px; /* Increased icon size */ /* Increased icon size */ /* Increased icon size */
+    height: 24px; /* Increased icon size */ /* Increased icon size */ /* Increased icon size */
+    fill: white;
+}
+
+/* Mobile responsive adjustments */
+@media screen and (max-width: 768px) {
+    .pdf-viewer-toolbar {
+        flex-wrap: wrap;
+        gap: 0.75rem; /* Adjust spacing for mobile */; /* Adjust spacing for mobile */; /* Adjust spacing for mobile */
+    }
+
+    .pdf-btn {
+        width: 44px; /* Slightly smaller for mobile */ /* Slightly smaller for mobile */ /* Slightly smaller for mobile */
+        height: 44px;
+    }
+
+    .pdf-btn svg {
+        width: 22px; /* Adjust icon size for mobile */ /* Adjust icon size for mobile */ /* Adjust icon size for mobile */
+        height: 22px;
+    }
+}
+
+/* Loading Overlay */
   .loading-overlay {
     position: fixed;
     top: 0;
@@ -517,9 +521,7 @@
     transform: translateY(0);
   }
   
- /* ...existing code... */
-
-/* Bookmarks Panel */
+ /* Bookmarks Panel */
 .bookmarks-panel {
     position: fixed;
     top: 0;
@@ -712,99 +714,6 @@
     }
 }
 
-/* PDF Viewer Toolbar and Buttons */
-.pdf-viewer-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.75rem;
-    background-color: var(--pdf-toolbar-bg);
-    border-radius: 8px 8px 0 0;
-    margin-top: 1rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.pdf-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    background-color: var(--card-bg);
-    color: var(--text-color);
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 120px;
-}
-
-[data-theme="dark"] .pdf-btn {
-    background-color: var(--dm-card-bg);
-    color: var(--dm-text-color);
-    border-color: var(--dm-border-color);
-}
-
-.pdf-btn:hover {
-    background-color: var(--highlight-color);
-    color: var(--primary-color);
-}
-
-[data-theme="dark"] .pdf-btn:hover {
-    background-color: var(--dm-highlight-color);
-    color: var(--dm-text-color);
-}
-
-.pdf-btn.active {
-    background-color: var(--primary-color);
-    color: white !important;
-    border-color: var(--primary-color);
-}
-
-[data-theme="dark"] .pdf-btn.active {
-    background-color: var(--dm-primary-color);
-    border-color: var(--dm-primary-color);
-    color: white !important;
-}
-
-.pdf-btn i, 
-.pdf-btn .svg-icon {
-    font-size: 1rem;
-    fill: currentColor;
-}
-
-/* Responsive adjustments for PDF buttons */
-@media screen and (max-width: 768px) {
-    .pdf-btn {
-        min-width: auto;
-        padding: 0.75rem;
-        font-size: 0.85rem;
-    }
-    
-    .pdf-btn span {
-        display: none;
-    }
-    
-    .pdf-btn i,
-    .pdf-btn .svg-icon {
-        margin: 0;
-        font-size: 1.2rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .pdf-viewer-toolbar {
-        padding: 0.5rem;
-        gap: 0.25rem;
-    }
-    
-    .pdf-btn {
-        padding: 0.5rem;
-    }
-}
-
 /* Result Form Styles */
 .result-form-wrapper {
     background-color: var(--card-bg);
@@ -901,5 +810,44 @@
 
     .form-group {
         grid-column: 1 / -1;
+    }
+}
+
+/* Resources Section */
+.resources-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.resources-section .section-title {
+    margin: 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.subject-resources {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.no-resources {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+@media screen and (max-width: 768px) {
+    .subject-resources {
+        grid-template-columns: 1fr;
+    }
+    
+    .resources-section .section-title {
+        font-size: 1.3rem;
     }
 }
