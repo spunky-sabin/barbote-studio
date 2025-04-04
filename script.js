@@ -39,7 +39,7 @@ const sharedResources = {
             },
             {
                 name: '2080 to 2076 Solutions',
-                filename: 'https://drive.google.com/file/d/1A33tLdtRFdNrmvXvjSu33Bo523svsVbC/preview'
+                filename: 'https://drive.google.com/file/d/1nAJWnMvb1ipME1Un0hf7XNPDBuhsGt-h/preview'
             }
         ],
         'Computer Application': [
@@ -84,10 +84,6 @@ const sharedResources = {
             }
         ],
         'Engineering Chemistry I(New)': [
-            {
-                name: '2081 Question (New)',
-                filename: 'https://drive.google.com/file/d/1S0a71BqDSPXLR9I8mQ5CL7XEraQphChJ/preview'
-            },
             {
                 name: '2079-2081 Questions',
                 filename: 'https://drive.google.com/file/d/1RlksVx30OzE6DMbudpq6QEhlJpGnNKof/preview'
@@ -330,10 +326,6 @@ const resources = {
             {
                 name: '2081-2078 Questions',
                 filename: 'https://drive.google.com/file/d/1vO1wbDJTrI1BJ8UkQbrF6uUgAcfrwWnN/preview'
-            },
-            {
-                name: '2081 Question (new)',
-                filename : 'https://drive.google.com/file/d/15drjfRK1vhvnWHhu9pdvD1BgqFtnCmfM/view'
             }
         ],
         'Engineering Material':[
@@ -365,26 +357,6 @@ const resources = {
             }
             ]
     },
-    'dit-3-notes': {
-        'C-Programming':[
-            {
-                name: 'Notes',
-                filename: 'https://drive.google.com/file/d/1fIXSt3o3V7cutRDkAdPATqULfNYvmKhv/view'
-            },
-            {
-                name: '2080 Solution',
-                filename: 'https://drive.google.com/file/d/1jRLS-iOwZW88dTsWwfCiVcl8Wh6I7-NI/view'
-            }
-        ]
-    },
-     'dit-3-questions': {
-        'C-Programming':[
-            {
-                name: '2080-2081 Questions',
-                filename: 'https://drive.google.com/file/d/1Lufgp4y9mjDyEJDec2HjHruWT7UdgOj4/preview'
-            },
-        ]
-     },
 };
 
 // Toggle between notice board and course navigation
@@ -453,7 +425,7 @@ function showHomePage() {
                     <h3 class="card-title">Computer Engineering</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
-                <div class="card" onclick="showSemesters('dit', 'Information Technology')">
+                <div class="card" onclick="showSemesters('it', 'Information Technology')">
                     <h3 class="card-title">Information Technology</h3>
                     <p class="card-description">Access notes and question papers</p>
                 </div>
@@ -482,9 +454,8 @@ function showHomePage() {
     `;
 }
 
-// Update the showSemesters function
+// Show semesters for selected course
 function showSemesters(courseId, courseName) {
-    console.log('Opening course:', courseId, courseName); // Debug log
     currentState.course = courseId;
     currentState.courseName = courseName;
     currentState.semester = null;
@@ -495,41 +466,44 @@ function showSemesters(courseId, courseName) {
     updateTopBar();
     updateBreadcrumb();
     
-    let semestersHTML = '';
-    for (let i = 1; i <= 6; i++) {
-        semestersHTML += `
-            <div class="card" onclick="showResourceTypes('${i}')">
-                <h3 class="card-title">Semester ${i}</h3>
-                <p class="card-description">View semester ${i} resources</p>
-            </div>
-        `;
-    }
-    
     document.getElementById('content-area').innerHTML = `
         <div class="header-with-back">
             <a href="#" class="back-button" onclick="showHomePage()">
-                ← Back to Courses
+                ← Back to Home
             </a>
             <h2 class="section-title">${courseName}</h2>
         </div>
-        <h3 class="section-title">Select a Semester</h3>
         <div class="card-grid">
-            ${semestersHTML}
+            <div class="card" onclick="showResourceTypes('1')">
+                <h3 class="card-title">First Semester</h3>
+                <p class="card-description">View resources for the first semester</p>
+            </div>
+            <div class="card" onclick="showResourceTypes('2')">
+                <h3 class="card-title">Second Semester</h3>
+                <p class="card-description">View resources for the second semester</p>
+            </div>
+            <div class="card" onclick="showResourceTypes('3')">
+                <h3 class="card-title">Third Semester</h3>
+                <p class="card-description">View resources for the third semester</p>
+            </div>
+            <div class="card" onclick="showResourceTypes('4')">
+                <h3 class="card-title">Fourth Semester</h3>
+                <p class="card-description">View resources for the fourth semester</p>
+            </div>
+            <div class="card" onclick="showResourceTypes('5')">
+                <h3 class="card-title">Fifth Semester</h3>
+                <p class="card-description">View resources for the fifth semester</p>
+            </div>
+            <div class="card" onclick="showResourceTypes('6')">
+                <h3 class="card-title">Sixth Semester</h3>
+                <p class="card-description">View resources for the sixth semester</p>
+            </div>
         </div>
     `;
+    
+    document.getElementById('course-nav').style.display = 'block';
+    updateCourseNav();
 }
-
-// Add event delegation for dynamic elements
-document.addEventListener('click', function(e) {
-    const target = e.target.closest('.card');
-    if (target) {
-        const courseId = target.getAttribute('data-course');
-        const courseName = target.querySelector('.card-title')?.textContent;
-        if (courseId && courseName) {
-            showSemesters(courseId, courseName);
-        }
-    }
-});
 
 // Show resource types for selected semester
 function showResourceTypes(semesterId) {
@@ -540,6 +514,25 @@ function showResourceTypes(semesterId) {
     
     updateBreadcrumb();
     
+    // Get both questions and notes resources
+    const questionsKey = `${currentState.course}-${semesterId}-questions`;
+    const notesKey = `${currentState.course}-${semesterId}-notes`;
+    
+    // Check if first or second semester for shared resources
+    const isFirstSemester = semesterId === '1';
+    const isSecondSemester = semesterId === '2';
+    
+    let questionsMap = resources[questionsKey] || {};
+    let notesMap = resources[notesKey] || {};
+    
+    if (isFirstSemester) {
+        questionsMap = sharedResources['first-sem-questions'] || {};
+        notesMap = sharedResources['first-sem-notes'] || {};
+    } else if (isSecondSemester) {
+        questionsMap = sharedResources['second-sem-questions'] || {};
+        notesMap = sharedResources['second-sem-notes'] || {};
+    }
+    
     document.getElementById('content-area').innerHTML = `
         <div class="header-with-back">
             <a href="#" class="back-button" onclick="showSemesters('${currentState.course}', '${currentState.courseName}')">
@@ -547,24 +540,43 @@ function showResourceTypes(semesterId) {
             </a>
             <h2 class="section-title">${currentState.courseName} - Semester ${semesterId}</h2>
         </div>
-        <h3 class="section-title">Select Resource Type</h3>
-        <div class="card-grid">
-            <div class="card resource-type-card" onclick="showResources('notes')">
-                <div class="resource-icon">📝</div>
-                <div>
-                    <h3 class="card-title">Notes</h3>
-                    <p class="card-description">Lecture notes and study materials</p>
-                </div>
+        
+        <section class="resources-section">
+            <h3 class="section-title">Question Papers</h3>
+            <div class="subject-resources">
+                ${generateResourcesHTML(questionsMap)}
             </div>
-            <div class="card resource-type-card" onclick="showResources('questions')">
-                <div class="resource-icon">❓</div>
-                <div>
-                    <h3 class="card-title">Questions</h3>
-                    <p class="card-description">Previous exam papers and practice questions</p>
-                </div>
+            
+            <h3 class="section-title">Notes and Study Materials</h3>
+            <div class="subject-resources">
+                ${generateResourcesHTML(notesMap)}
+            </div>
+        </section>
+    `;
+}
+
+// Helper function to generate resources HTML
+function generateResourcesHTML(resourceMap) {
+    if (Object.keys(resourceMap).length === 0) {
+        return '<p class="no-resources">No resources available yet.</p>';
+    }
+    
+    return Object.entries(resourceMap).map(([subject, pdfs]) => `
+        <div class="subject-card">
+            <div class="subject-header">
+                <h3 class="subject-title">${subject}</h3>
+                <div class="subject-count">${pdfs.length} ${pdfs.length === 1 ? 'file' : 'files'}</div>
+            </div>
+            <div class="pdf-list">
+                ${pdfs.map(pdf => `
+                    <a href="#" class="pdf-link" onclick="viewPdf('${pdf.filename}', '${pdf.name}')">
+                        <span class="pdf-icon">📄</span>
+                        <span class="pdf-name">${pdf.name}</span>
+                    </a>
+                `).join('')}
             </div>
         </div>
-    `;
+    `).join('');
 }
 
 // Show resources for the selected type
@@ -640,54 +652,48 @@ function viewPdf(pdfPath, title) {
 
     updateBreadcrumb();
 
+    // Extract file ID from Google Drive URL
     const fileId = pdfPath.split('/d/')[1].split('/')[0];
     const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
     const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
 
-    // Check if this is the academic calendar
-    const isCalendar = title === '2081/82 Academic Calendar';
-    const backButtonText = isCalendar ? 'Back to Home' : 'Back to Resources';
-    const backButtonAction = isCalendar ? 'showHomePage()' : `showResources('${currentState.resourceType}')`;
-
-    // Check if bookmarked
-    const isBookmarked = bookmarks.some(b => b.path === pdfPath);
-
-    // Create single toolbar with all buttons
     document.getElementById('content-area').innerHTML = `
         <div class="header-with-back">
-            <a href="#" class="back-button" onclick="${backButtonAction}">
-                ← ${backButtonText}
+            <a href="#" class="back-button" onclick="showResources('${currentState.resourceType}')">
+                ← Back to Resources
             </a>
             <h2 class="section-title">${title}</h2>
         </div>
         <div class="pdf-viewer-toolbar">
-            <button class="pdf-btn" onclick="downloadPdf('${downloadUrl}')">
-                <svg class="svg-icon"><use href="#icon-download"/></svg>
-                <span>Download</span>
-            </button>
-            <button class="pdf-btn" onclick="toggleFullscreen(this.parentElement.nextElementSibling)">
-                <svg class="svg-icon"><use href="#icon-fullscreen"/></svg>
-                <span class="fullscreen-text">Fullscreen</span>
-            </button>
-            <button class="pdf-btn ${isBookmarked ? 'active' : ''}" onclick="toggleBookmark('${pdfPath}', '${title}')">
-                <svg class="svg-icon">
-                    <use href="#icon-bookmark"/>
+            <a href="${downloadUrl}" class="pdf-btn" download="${title}.pdf" title="Download">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path d="M12 16l4-4h-3V4h-2v8H8l4 4zM5 18v2h14v-2H5z"/>
                 </svg>
-                <span>${isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
+            </a>
+            <button class="pdf-btn" onclick="toggleFullscreen()" title="Fullscreen">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path d="M7 14H5v5h5v-2H7v-3zm0-4h2V7h3V5H5v5h2V7zm10 10h-3v2h5v-5h-2v3zm0-10V5h-5v2h3v3h2z"/>
+                </svg>
+            </button>
+            <button class="pdf-btn" onclick="addBookmark('${title}', '${pdfPath}')" title="Bookmark">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path d="M6 4v16l6-4 6 4V4H6z"/>
+                </svg>
             </button>
         </div>
-        <div class="pdf-container" id="pdfContainer">
+        <div class="pdf-container">
             <iframe 
+                allowfullscreen="true"
+                webkitallowfullscreen="true" 
+                mozallowfullscreen="true"
+                frameborder="0"
+                scrolling="auto"
+                seamless=""
                 src="${embedUrl}"
-                allowfullscreen
-                loading="lazy"
-                onload="handleIframeLoad(this)"
-                onerror="handleIframeError(this)">
+                style="background: #fff;">
             </iframe>
         </div>
     `;
-
-    return false;
 }
 
 // Add this function after the viewPdf function
@@ -807,16 +813,6 @@ function updateBreadcrumb() {
 }
 
 function initPortal() {
-    // Load saved bookmarks from localStorage
-    bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
-    
-    // Initialize dark mode
-    isDarkMode = localStorage.getItem('darkMode') === 'true';
-    document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-    
-    // Update bookmarks list if panel exists
-    updateBookmarksList();
-    
     showHomePage();
     
     // Disable browser's native PDF viewer
@@ -824,7 +820,6 @@ function initPortal() {
         navigator.plugins['Chrome PDF Viewer'].enabled = false;
     }
 }
-
 // Update the toggleResultForm function
 function toggleResultForm() {
 currentState = {
@@ -908,41 +903,20 @@ document.getElementById('content-area').innerHTML = `
 `;
 }
 
-// Dark mode initialization
+// Dark mode toggle
 function initDarkMode() {
-    // Get stored preference or default to false
-    isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.querySelector('#darkModeToggle i').className = 'fas fa-sun';
+    }
     
-    // Apply initial state
-    updateDarkMode();
-    
-    // Add toggle listener
     document.getElementById('darkModeToggle').addEventListener('click', () => {
         isDarkMode = !isDarkMode;
+        document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
         localStorage.setItem('darkMode', isDarkMode);
-        updateDarkMode();
+        const icon = document.querySelector('#darkModeToggle i');
+        icon.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
     });
-}
-
-function updateDarkMode() {
-    // Update document theme
-    document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-    
-    // Update toggle button icon
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    darkModeToggle.innerHTML = `<i class="fas fa-${isDarkMode ? 'sun' : 'moon'}"></i>`;
-    
-    // Update SVG colors
-    const svgIcons = document.querySelectorAll('.svg-icon');
-    svgIcons.forEach(icon => {
-        icon.style.fill = isDarkMode ? 'var(--dm-text-color)' : 'var(--text-color)';
-    });
-    
-    // Update theme color for mobile
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-    if (metaThemeColor) {
-        metaThemeColor.setAttribute('content', isDarkMode ? '#111827' : '#ffffff');
-    }
 }
 
 // Update the search functionality
@@ -1009,7 +983,7 @@ function initSearch() {
                 if (subject.toLowerCase().includes(searchTerm)) {
                     const courseName = {
                         'dcom': 'Computer Engineering',
-                        'dit': 'Information Technology',
+                        'it': 'Information Technology',
                         'dce': 'Civil Engineering',
                         'dee': 'Electrical Engineering',
                         'dge': 'Geomatics Engineering',
@@ -1096,18 +1070,12 @@ function toggleBookmark(pdfPath, title) {
     
     if (index === -1) {
         bookmarks.push({ path: pdfPath, title: title });
-        bookmarkBtn.innerHTML = `
-            <svg class="svg-icon"><use href="#icon-bookmark"/></svg>
-            <span>Bookmarked</span>
-        `;
+        bookmarkBtn.innerHTML = '<i class="fas fa-bookmark"></i> Bookmarked';
         bookmarkBtn.classList.add('active');
         showNotification('Resource bookmarked');
     } else {
         bookmarks.splice(index, 1);
-        bookmarkBtn.innerHTML = `
-            <svg class="svg-icon"><use href="#icon-bookmark"/></svg>
-            <span>Bookmark</span>
-        `;
+        bookmarkBtn.innerHTML = '<i class="far fa-bookmark"></i> Bookmark';
         bookmarkBtn.classList.remove('active');
         showNotification('Bookmark removed');
     }
@@ -1168,32 +1136,16 @@ showResources = wrapWithLoading(showResources);
 
 // Initialize features
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize dark mode
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    if (isDarkMode) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-    }
-    
-    darkModeToggle.addEventListener('click', () => {
-        isDarkMode = !isDarkMode;
-        document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-        localStorage.setItem('darkMode', isDarkMode);
-        darkModeToggle.innerHTML = `<i class="fas fa-${isDarkMode ? 'sun' : 'moon'}"></i>`;
-    });
-
-    // Initialize search
+    initDarkMode();
     initSearch();
-    
-    // Initialize bookmarks
     updateBookmarksList();
     
-    // Add bookmark toggle functionality
+    // Add bookmarks panel toggle
     document.querySelector('.close-bookmarks').addEventListener('click', () => {
         document.getElementById('bookmarksPanel').classList.remove('open');
     });
     
-    // Add bookmark button to header
+    // Add bookmark button to header if needed
     const headerControls = document.querySelector('.header-controls');
     const bookmarkToggle = document.createElement('button');
     bookmarkToggle.className = 'theme-toggle';
@@ -1202,7 +1154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('bookmarksPanel').classList.toggle('open');
     });
     headerControls.appendChild(bookmarkToggle);
-
 });
 
 // Initialize when the page loads
@@ -1212,102 +1163,3 @@ window.onload = initPortal;
 function downloadPdf(url) {
     window.open(url, '_blank');
 }
-
-// Add touch event handlers
-document.addEventListener('DOMContentLoaded', () => {
-    // ...existing initialization code...
-
-    // Add touch support for bookmarks panel
-    const bookmarksPanel = document.getElementById('bookmarksPanel');
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    bookmarksPanel.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, false);
-
-    bookmarksPanel.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    }, false);
-
-    function handleSwipe() {
-        const swipeThreshold = 100;
-        if (touchEndX - touchStartX > swipeThreshold) {
-            // Swipe right - close panel
-            bookmarksPanel.classList.remove('open');
-        }
-    }
-});
-
-// Add scroll-based header visibility
-
-// Update PDF viewer for touch devices
-function initPdfViewer() {
-    const pdfContainer = document.querySelector('.pdf-container');
-    if (!pdfContainer) return;
-
-    // Add pinch-zoom support
-    let initialDistance = 0;
-    let currentScale = 1;
-
-    pdfContainer.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 2) {
-            initialDistance = getDistance(e.touches[0], e.touches[1]);
-        }
-    });
-
-    pdfContainer.addEventListener('touchmove', (e) => {
-        if (e.touches.length === 2) {
-            const currentDistance = getDistance(e.touches[0], e.touches[1]);
-            const scale = currentDistance / initialDistance;
-            currentScale = Math.min(Math.max(scale, 0.5), 3);
-            pdfContainer.style.transform = `scale(${currentScale})`;
-        }
-    });
-}
-
-function getDistance(touch1, touch2) {
-    const dx = touch1.clientX - touch2.clientX;
-    const dy = touch1.clientY - touch2.clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-}
-
-// Add performance optimizations
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Debounce search function
-const debouncedSearch = debounce((searchTerm) => {
-    // Existing search logic
-}, 300);
-
-// Update search event listener
-searchInput.addEventListener('input', (e) => {
-    debouncedSearch(e.target.value.toLowerCase().trim());
-});
-
-// Add intersection observer for lazy loading
-const lazyLoadObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const img = entry.target;
-            img.src = img.dataset.src;
-            lazyLoadObserver.unobserve(img);
-        }
-    });
-});
-
-// Apply lazy loading to images
-document.querySelectorAll('img[data-src]').forEach(img => {
-    lazyLoadObserver.observe(img);
-});
