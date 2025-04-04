@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="shortcut icon" href="student resource.jpg" type="image/x-icon">
+    <script src="script.js" defer></script>
+    <title>Student Resource Portal</title>
+</head>
+<body>
+    <!-- SVG Sprite -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <!-- Bookmark Icon -->
+        <symbol id="icon-bookmark" viewBox="0 0 24 24">
+            <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/>
+        </symbol>
+        
+        <!-- Bookmark Filled Icon -->
+        <symbol id="icon-bookmark-filled" viewBox="0 0 24 24">
+            <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+        </symbol>
+        
+        <!-- Download Icon -->
+        <symbol id="icon-download" viewBox="0 0 24 24">
+            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+        </symbol>
+        
+        <!-- Fullscreen Icon -->
+        <symbol id="icon-fullscreen" viewBox="0 0 24 24">
+            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+        </symbol>
+        
+        <!-- Exit Fullscreen Icon -->
+        <symbol id="icon-fullscreen-exit" viewBox="0 0 24 24">
+            <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
+        </symbol>
+    </svg>
+    
+    <!-- Navigation Bar -->
+    <nav class="header-controls">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search resources...">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        <button id="darkModeToggle" class="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <!-- Notice Board -->
+    <div class="notice-board" id="notice-board"></div>
+    
+    <!-- Result Form Section -->
+    <div id="result-form" style="display: none;" class="result-form-container">
+        <form action="https://itms.ctevt.org.np:5580/search_results" autocomplete="off" id="frmCheckResults" method="post" name="frmCheckResults" target="_blank">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Examination Year:</label>
+                    <select class="form-control" id="src_year" name="src_year" required>
+                        <option value="">-- Select --</option>
+                        <option value="2081">2081</option>
+                        <option value="2080">2080</option>
+                        <option value="2079">2079</option>
+                        <option value="2078">2078</option>
+                        <option value="2077">2077</option>
+                        <option value="2076">2076</option>
+                        <option value="2075">2075</option>
+                        <option value="2074">2074</option>
+                        <option value="2073">2073</option>
+                        <option value="2072">2072</option>
+                        <option value="2071">2071</option>
+                        <option value="2070">2070</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Level:</label>
+                    <select name="src_level" id="src_level" class="form-control" required>
+                        <option value="">-- Select --</option>
+                        <option value="2">Pre-diploma</option>
+                        <option value="3">Diploma/PCL</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Symbol Number:</label>
+                    <input type="text" name="exam_symbol_number" id="exam_symbol_number" class="form-control" placeholder="e.g. 1000234" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Date of Birth (B.S.):</label>
+                    <input type="text" name="dob" id="dob" placeholder="Date Format: YYYY-MM-DD" class="form-control" required>
+                </div>
+                
+                <div class="form-submit">
+                    <input type="submit" name="submit" value="Search" class="btn btn-primary">
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Course Navigation - Initially hidden, shown when course selected -->
+    <div class="course-nav" id="course-nav">
+        <div class="course-nav-container">
+            <a href="#" class="course-nav-item" data-course="dcom" onclick="showSemesters('dcom', 'Computer Engineering')">DCOM</a>
+            <a href="#" class="course-nav-item" data-course="it" onclick="showSemesters('it', 'Information Technology')">IT</a>
+            <a href="#" class="course-nav-item" data-course="dce" onclick="showSemesters('dce', 'Civil Engineering')">DCE</a>
+            <a href="#" class="course-nav-item" data-course="dee" onclick="showSemesters('dee', 'Electrical Engineering')">DEE</a>
+            <a href="#" class="course-nav-item" data-course="dge" onclick="showSemesters('dge', 'Geomatics Engineering')">DGE</a>
+            <a href="#" class="course-nav-item" data-course="dar" onclick="showSemesters('dar', 'Architecture Engineering')">DAE</a>
+            <a href="#" class="course-nav-item" data-course="dme" onclick="showSemesters('dme', 'Mechanical Engineering')">DME</a>
+        </div>
+    </div>
+    
+    <!-- Main Content - Home Page (Course Selection) -->
+    <main class="container" id="main-content">
+        <!-- Breadcrumb will be dynamically updated -->
+        <div class="breadcrumb" id="breadcrumb">
+            <a href="#" onclick="showHomePage()">Home</a>
+        </div>
+        
+        <!-- Content area - initially showing course selection -->
+        <div id="content-area">
+            <h2 class="section-title">Select a Course</h2>
+            <div class="card-grid">
+                <div class="card" onclick="showSemesters('dcom', 'Computer Engineering')">
+                    <h3 class="card-title">Computer Engineering</h3>
+                    <p class="card-description">Access notes and question papers</p>
+                </div>
+                <div class="card" onclick="showSemesters('it', 'Information Technology')">
+                    <h3 class="card-title">Information Technology</h3>
+                    <p class="card-description">Access notes and question papers</p>
+                </div>
+                <div class="card" onclick="showSemesters('dce', 'Civil Engineering')">
+                    <h3 class="card-title">Civil Engineering</h3>
+                    <p class="card-description">Access notes and question papers</p>
+                </div>
+                <div class="card" onclick="showSemesters('dee', 'Electrical Engineering')">
+                    <h3 class="card-title">Electrical Engineering</h3>
+                    <p class="card-description">Access notes and question papers</p>
+                </div>
+                <div class="card" onclick="showSemesters('dge', 'Geomatics Engineering')">
+                    <h3 class="card-title">Geomatics Engineering</h3>
+                    <p class="card-description">Access notes and question papers</p>
+                </div>
+                <div class="card" onclick="showSemesters('dar', 'Architecture Engineering')">
+                    <h3 class="card-title">Architecture Engineering</h3>
+                    <p class="card-description">Access notes and question papers</p>
+                </div>
+                <div class="card" onclick="showSemesters('dme', 'Mechanical Engineering')">
+                    <h3 class="card-title">Mechanical Engineering</h3>
+                    <p class="card-description">Access notes and question papers</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Add bookmarks panel -->
+    <div id="bookmarksPanel" class="bookmarks-panel">
+        <div class="bookmarks-header">
+            <h3>Bookmarked Resources</h3>
+            <button class="close-bookmarks">&times;</button>
+        </div>
+        <div id="bookmarksList" class="bookmarks-list">
+            <!-- Bookmarks will be dynamically added here -->
+        </div>
+    </div>
+</body>
+</html>

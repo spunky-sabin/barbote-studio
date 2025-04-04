@@ -466,43 +466,27 @@ function showSemesters(courseId, courseName) {
     updateTopBar();
     updateBreadcrumb();
     
+    let semestersHTML = '';
+    for (let i = 1; i <= 6; i++) {
+        semestersHTML += `
+            <div class="card" onclick="showResourceTypes('${i}')">
+                <h3 class="card-title">Semester ${i}</h3>
+            </div>
+        `;
+    }
+    
     document.getElementById('content-area').innerHTML = `
         <div class="header-with-back">
             <a href="#" class="back-button" onclick="showHomePage()">
-                ← Back to Home
+                ← Back to Courses
             </a>
             <h2 class="section-title">${courseName}</h2>
         </div>
+        <h3 class="section-title">Select a Semester</h3>
         <div class="card-grid">
-            <div class="card" onclick="showResourceTypes('1')">
-                <h3 class="card-title">First Semester</h3>
-                <p class="card-description">View resources for the first semester</p>
-            </div>
-            <div class="card" onclick="showResourceTypes('2')">
-                <h3 class="card-title">Second Semester</h3>
-                <p class="card-description">View resources for the second semester</p>
-            </div>
-            <div class="card" onclick="showResourceTypes('3')">
-                <h3 class="card-title">Third Semester</h3>
-                <p class="card-description">View resources for the third semester</p>
-            </div>
-            <div class="card" onclick="showResourceTypes('4')">
-                <h3 class="card-title">Fourth Semester</h3>
-                <p class="card-description">View resources for the fourth semester</p>
-            </div>
-            <div class="card" onclick="showResourceTypes('5')">
-                <h3 class="card-title">Fifth Semester</h3>
-                <p class="card-description">View resources for the fifth semester</p>
-            </div>
-            <div class="card" onclick="showResourceTypes('6')">
-                <h3 class="card-title">Sixth Semester</h3>
-                <p class="card-description">View resources for the sixth semester</p>
-            </div>
+            ${semestersHTML}
         </div>
     `;
-    
-    document.getElementById('course-nav').style.display = 'block';
-    updateCourseNav();
 }
 
 // Show resource types for selected semester
@@ -514,25 +498,6 @@ function showResourceTypes(semesterId) {
     
     updateBreadcrumb();
     
-    // Get both questions and notes resources
-    const questionsKey = `${currentState.course}-${semesterId}-questions`;
-    const notesKey = `${currentState.course}-${semesterId}-notes`;
-    
-    // Check if first or second semester for shared resources
-    const isFirstSemester = semesterId === '1';
-    const isSecondSemester = semesterId === '2';
-    
-    let questionsMap = resources[questionsKey] || {};
-    let notesMap = resources[notesKey] || {};
-    
-    if (isFirstSemester) {
-        questionsMap = sharedResources['first-sem-questions'] || {};
-        notesMap = sharedResources['first-sem-notes'] || {};
-    } else if (isSecondSemester) {
-        questionsMap = sharedResources['second-sem-questions'] || {};
-        notesMap = sharedResources['second-sem-notes'] || {};
-    }
-    
     document.getElementById('content-area').innerHTML = `
         <div class="header-with-back">
             <a href="#" class="back-button" onclick="showSemesters('${currentState.course}', '${currentState.courseName}')">
@@ -540,43 +505,24 @@ function showResourceTypes(semesterId) {
             </a>
             <h2 class="section-title">${currentState.courseName} - Semester ${semesterId}</h2>
         </div>
-        
-        <section class="resources-section">
-            <h3 class="section-title">Question Papers</h3>
-            <div class="subject-resources">
-                ${generateResourcesHTML(questionsMap)}
+        <h3 class="section-title">Select Resource Type</h3>
+        <div class="card-grid">
+            <div class="card resource-type-card" onclick="showResources('notes')">
+                <div class="resource-icon">📝</div>
+                <div>
+                    <h3 class="card-title">Notes</h3>
+                    <p class="card-description">Lecture notes and study materials</p>
+                </div>
             </div>
-            
-            <h3 class="section-title">Notes and Study Materials</h3>
-            <div class="subject-resources">
-                ${generateResourcesHTML(notesMap)}
-            </div>
-        </section>
-    `;
-}
-
-// Helper function to generate resources HTML
-function generateResourcesHTML(resourceMap) {
-    if (Object.keys(resourceMap).length === 0) {
-        return '<p class="no-resources">No resources available yet.</p>';
-    }
-    
-    return Object.entries(resourceMap).map(([subject, pdfs]) => `
-        <div class="subject-card">
-            <div class="subject-header">
-                <h3 class="subject-title">${subject}</h3>
-                <div class="subject-count">${pdfs.length} ${pdfs.length === 1 ? 'file' : 'files'}</div>
-            </div>
-            <div class="pdf-list">
-                ${pdfs.map(pdf => `
-                    <a href="#" class="pdf-link" onclick="viewPdf('${pdf.filename}', '${pdf.name}')">
-                        <span class="pdf-icon">📄</span>
-                        <span class="pdf-name">${pdf.name}</span>
-                    </a>
-                `).join('')}
+            <div class="card resource-type-card" onclick="showResources('questions')">
+                <div class="resource-icon">❓</div>
+                <div>
+                    <h3 class="card-title">Questions</h3>
+                    <p class="card-description">Previous exam papers and practice questions</p>
+                </div>
             </div>
         </div>
-    `).join('');
+    `;
 }
 
 // Show resources for the selected type
@@ -652,48 +598,57 @@ function viewPdf(pdfPath, title) {
 
     updateBreadcrumb();
 
-    // Extract file ID from Google Drive URL
     const fileId = pdfPath.split('/d/')[1].split('/')[0];
     const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
     const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
 
+    // Check if this is the academic calendar
+    const isCalendar = title === '2081/82 Academic Calendar';
+    const backButtonText = isCalendar ? 'Back to Home' : 'Back to Resources';
+    const backButtonAction = isCalendar ? 'showHomePage()' : `showResources('${currentState.resourceType}')`;
+
+    // Check if bookmarked
+    const isBookmarked = bookmarks.some(b => b.path === pdfPath);
+
+    // Create single toolbar with all buttons
     document.getElementById('content-area').innerHTML = `
         <div class="header-with-back">
-            <a href="#" class="back-button" onclick="showResources('${currentState.resourceType}')">
-                ← Back to Resources
+            <a href="#" class="back-button" onclick="${backButtonAction}">
+                ← ${backButtonText}
             </a>
             <h2 class="section-title">${title}</h2>
         </div>
         <div class="pdf-viewer-toolbar">
-            <a href="${downloadUrl}" class="pdf-btn" download="${title}.pdf" title="Download">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path d="M12 16l4-4h-3V4h-2v8H8l4 4zM5 18v2h14v-2H5z"/>
-                </svg>
-            </a>
-            <button class="pdf-btn" onclick="toggleFullscreen()" title="Fullscreen">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path d="M7 14H5v5h5v-2H7v-3zm0-4h2V7h3V5H5v5h2V7zm10 10h-3v2h5v-5h-2v3zm0-10V5h-5v2h3v3h2z"/>
-                </svg>
+            <button class="pdf-btn" onclick="downloadPdf('${downloadUrl}')">
+                <svg class="btn-icon"><use href="#icon-download"/></svg>
+                <span>Download</span>
             </button>
-            <button class="pdf-btn" onclick="addBookmark('${title}', '${pdfPath}')" title="Bookmark">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path d="M6 4v16l6-4 6 4V4H6z"/>
+            <button class="pdf-btn" onclick="toggleFullscreen(this.parentElement.nextElementSibling)">
+                <svg class="btn-icon"><use href="#icon-fullscreen"/></svg>
+                <span class="fullscreen-text">Fullscreen</span>
+            </button>
+            <button class="pdf-btn ${isBookmarked ? 'active' : ''}" onclick="toggleBookmark('${pdfPath}', '${title}')">
+                <svg class="btn-icon">
+                    <use href="#icon-${isBookmarked ? 'bookmark-filled' : 'bookmark'}"/>
                 </svg>
+                <span>${isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
             </button>
         </div>
-        <div class="pdf-container">
+        <div class="pdf-container" id="pdfContainer">
+            <div class="popout-overlay"></div>
             <iframe 
-                allowfullscreen="true"
-                webkitallowfullscreen="true" 
-                mozallowfullscreen="true"
+                allowfullscreen="allowfullscreen"
                 frameborder="0"
-                scrolling="auto"
+                height="620px"
+                scrolling="no"
                 seamless=""
                 src="${embedUrl}"
-                style="background: #fff;">
+                width="100%">
             </iframe>
         </div>
     `;
+
+    return false;
 }
 
 // Add this function after the viewPdf function
