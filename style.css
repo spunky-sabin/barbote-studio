@@ -1,0 +1,656 @@
+/* ================================
+   BARBOTE PHOTO CREATION STYLES
+   Mobile-First Responsive Design
+   ================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* ================================
+   HERO SECTION - Mobile First
+   ================================ */
+.hero {
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    animation: float 20s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.hero-content {
+    z-index: 2;
+    position: relative;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    animation: slideInUp 1s ease-out;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    animation: slideInUp 1s ease-out 0.3s both;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.cta-button {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    animation: slideInUp 1s ease-out 0.6s both;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+}
+
+/* ================================
+   NAVIGATION - Mobile First
+   ================================ */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 0.8rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.nav-links {
+    display: none;
+    list-style: none;
+    gap: 1rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #667eea;
+}
+
+/* ================================
+   SECTIONS - Mobile First
+   ================================ */
+.section {
+    padding: 3rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #333;
+    position: relative;
+}
+
+.section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+}
+
+/* ================================
+   SERVICES SECTION - Mobile First
+   ================================ */
+.services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.service-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.service-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.service-card h3 {
+    margin-bottom: 1rem;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.service-card p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* ================================
+   GALLERY SECTION - Mobile First
+   ================================ */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.gallery-item {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-size: cover;
+    background-position: center;
+}
+
+.gallery-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Gallery Photo References */
+.gallery-1 { background-image: url('photo-1.jpeg'); }
+.gallery-2 { background-image: url('photo-2.jpeg'); }
+.gallery-3 { background-image: url('photo-3.jpeg'); }
+.gallery-4 { background-image: url('photo-4.jpeg'); }
+.gallery-5 { background-image: url('photo-5.jpeg'); }
+.gallery-6 { background-image: url('photo-6.jpeg'); }
+.gallery-7 { background-image: url('photo-7.jpeg'); }
+.gallery-8 { background-image: url('photo-8.jpeg'); }
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+    padding: 1rem 0.5rem 0.5rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    transform: translateY(0);
+}
+
+.gallery-overlay span {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* ================================
+   FRAMES SECTION - Mobile First
+   ================================ */
+.frames-section {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 3rem 1rem;
+    margin: 2rem 0;
+}
+
+.frames-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.frame-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.frame-item:hover {
+    transform: translateY(-3px);
+}
+
+.frame-preview {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    position: relative;
+    border: 2px solid #333;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Frame Photo References */
+.frame-1 { background-image: url('photo-9.jpeg'); }
+.frame-2 { background-image: url('photo-10.jpeg'); }
+.frame-3 { background-image: url('photo-11.jpeg'); }
+.frame-4 { background-image: url('photo-12.jpeg'); }
+.frame-5 { background-image: url('photo-13.jpeg'); }
+.frame-6 { background-image: url('photo-14.jpeg'); }
+
+.frame-preview.gold {
+    border-color: #ffd700;
+}
+
+.frame-preview.silver {
+    border-color: #c0c0c0;
+}
+
+.frame-preview.wood {
+    border-color: #8b4513;
+}
+
+.frame-item h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.frame-item p {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* ================================
+   ABOUT SECTION - Mobile First
+   ================================ */
+.about-section {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.about-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.profile-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.about-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.about-card h3 {
+    font-size: 1.2rem;
+    color: #ffd700;
+    margin-bottom: 1rem;
+}
+
+.about-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ================================
+   CONTACT SECTION - Mobile First
+   ================================ */
+.contact-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.contact-info {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.contact-item h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-item p {
+    font-size: 0.9rem;
+}
+
+/* ================================
+   TABLET STYLES (768px and up)
+   ================================ */
+@media (min-width: 768px) {
+    .navbar {
+        padding: 1rem 2rem;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .nav-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    
+    .nav-links a {
+        font-size: 1rem;
+    }
+    
+    .hero h1 {
+        font-size: 3.5rem;
+    }
+    
+    .hero p {
+        font-size: 1.3rem;
+    }
+    
+    .cta-button {
+        padding: 15px 30px;
+        font-size: 1.1rem;
+    }
+    
+    .section {
+        padding: 4rem 2rem;
+    }
+    
+    .section h2 {
+        font-size: 2.3rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+    
+    .gallery-overlay span {
+        font-size: 0.9rem;
+    }
+    
+    .frames-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .frame-preview {
+        height: 140px;
+    }
+    
+    .frame-item h4 {
+        font-size: 1rem;
+    }
+    
+    .frame-item p {
+        font-size: 0.9rem;
+    }
+    
+    .about-card {
+        padding: 2.5rem;
+    }
+    
+    .profile-photo {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .contact-info {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        max-width: 800px;
+    }
+}
+
+/* ================================
+   DESKTOP STYLES (1024px and up)
+   ================================ */
+@media (min-width: 1024px) {
+    .hero h1 {
+        font-size: 4rem;
+    }
+    
+    .hero p {
+        font-size: 1.5rem;
+    }
+    
+    .cta-button {
+        font-size: 1.2rem;
+    }
+    
+    .section {
+        padding: 5rem 2rem;
+    }
+    
+    .section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+    }
+    
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .service-card {
+        padding: 2rem;
+    }
+    
+    .service-icon {
+        font-size: 3rem;
+    }
+    
+    .service-card h3 {
+        font-size: 1.3rem;
+    }
+    
+    .service-card p {
+        font-size: 1rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.2rem;
+    }
+    
+    .gallery-item:hover {
+        transform: scale(1.05);
+    }
+    
+    .gallery-overlay {
+        padding: 1.5rem 1rem 1rem;
+    }
+    
+    .gallery-overlay span {
+        font-size: 1rem;
+    }
+    
+    .frames-section {
+        padding: 5rem 2rem;
+    }
+    
+    .frames-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 2rem;
+    }
+    
+    .frame-preview {
+        height: 150px;
+    }
+    
+    .frame-item {
+        padding: 1.2rem;
+    }
+    
+    .frame-item h4 {
+        font-size: 1.1rem;
+    }
+    
+    .about-section {
+        padding: 5rem 2rem;
+    }
+    
+    .about-card {
+        padding: 3rem;
+    }
+    
+    .profile-photo {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .about-card h2 {
+        font-size: 2rem;
+    }
+    
+    .about-card h3 {
+        font-size: 1.3rem;
+    }
+    
+    .about-card p {
+        font-size: 1rem;
+    }
+    
+    .contact-section {
+        padding: 4rem 2rem;
+    }
+    
+    .contact-info {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .contact-item {
+        padding: 2rem;
+    }
+    
+    .contact-item h3 {
+        font-size: 1.2rem;
+    }
+    
+    .contact-item p {
+        font-size: 1rem;
+    }
+}
+
+/* ================================
+   LARGE DESKTOP (1440px and up)
+   ================================ */
+@media (min-width: 1440px) {
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+    }
+    
+    .gallery-grid {
+        gap: 1.5rem;
+    }
+    
+    .frames-grid {
+        gap: 2.5rem;
+    }
+}

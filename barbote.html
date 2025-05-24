@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbote Photo Creation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Barbote Photo Creation</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#frames">Frames</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Capture Every Moment</h1>
+            <p>Professional Photography & Video Services</p>
+            <a href="#services" class="cta-button">Explore Our Services</a>
+        </div>
+    </section>
+
+    <section id="services" class="section">
+        <h2>Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">💒</div>
+                <h3>Wedding Photography & Video</h3>
+                <p>Capture your special day with cinematic videos and stunning photography that tells your love story.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📋</div>
+                <h3>Passport Photos</h3>
+                <p>Professional passport-size photos that meet all official requirements with quick turnaround.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🖼️</div>
+                <h3>Custom Photo Frames</h3>
+                <p>Beautiful custom frames in various styles to perfectly complement your precious memories.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎯</div>
+                <h3>Banner Design</h3>
+                <p>Eye-catching banners for events, businesses, and special occasions with professional design.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🏍️</div>
+                <h3>Vehicle Stickers</h3>
+                <p>Custom stickers for bikes and cars with durable materials and vibrant colors.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📷</div>
+                <h3>Portrait Photography</h3>
+                <p>Professional portraits for individuals, families, and corporate headshots.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="section">
+        <h2>Our Work</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item gallery-1" onclick="showDemo('Wedding Video 1')">
+                <div class="gallery-overlay">
+                    <span>Wedding Video</span>
+                </div>
+            </div>
+            <div class="gallery-item gallery-2" onclick="showDemo('Wedding Photo 1')">
+                <div class="gallery-overlay">
+                    <span>Wedding Photography</span>
+                </div>
+            </div>
+            <div class="gallery-item gallery-3" onclick="showDemo('Portrait Session')">
+                <div class="gallery-overlay">
+                    <span>Portrait Session</span>
+                </div>
+            </div>
+            <div class="gallery-item gallery-4" onclick="showDemo('Wedding Video 2')">
+                <div class="gallery-overlay">
+                    <span>Wedding Cinematography</span>
+                </div>
+            </div>
+            <div class="gallery-item gallery-5" onclick="showDemo('Family Portrait')">
+                <div class="gallery-overlay">
+                    <span>Family Portrait</span>
+                </div>
+            </div>
+            <div class="gallery-item gallery-6" onclick="showDemo('Corporate Headshots')">
+                <div class="gallery-overlay">
+                    <span>Corporate Photography</span>
+                </div>
+            </div>
+            <div class="gallery-item gallery-7" onclick="showDemo('Wedding Photo 2')">
+                <div class="gallery-overlay">
+                    <span>Bridal Photography</span>
+                </div>
+            </div>
+            <div class="gallery-item gallery-8" onclick="showDemo('Event Coverage')">
+                <div class="gallery-overlay">
+                    <span>Event Coverage</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="frames" class="frames-section">
+        <div class="section">
+            <h2 style="color: #333;">Photo Frames Collection</h2>
+            <div class="frames-grid">
+                <div class="frame-item">
+                    <div class="frame-preview gold frame-1"></div>
+                    <h4>Gold Classic Frame</h4>
+                    <p>Elegant gold finish perfect for special occasions</p>
+                </div>
+                <div class="frame-item">
+                    <div class="frame-preview silver frame-2"></div>
+                    <h4>Silver Modern Frame</h4>
+                    <p>Sleek silver design for contemporary spaces</p>
+                </div>
+                <div class="frame-item">
+                    <div class="frame-preview wood frame-3"></div>
+                    <h4>Wooden Rustic Frame</h4>
+                    <p>Natural wood finish for a warm, rustic feel</p>
+                </div>
+                <div class="frame-item">
+                    <div class="frame-preview frame-4"></div>
+                    <h4>Minimalist Frame</h4>
+                    <p>Clean, simple design that highlights your photos</p>
+                </div>
+                <div class="frame-item">
+                    <div class="frame-preview gold frame-5"></div>
+                    <h4>Ornate Gold Frame</h4>
+                    <p>Decorative gold frame for vintage-style photos</p>
+                </div>
+                <div class="frame-item">
+                    <div class="frame-preview silver frame-6"></div>
+                    <h4>Professional Frame</h4>
+                    <p>Perfect for certificates and professional photos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <div class="about-card">
+            <img src="photo-15.jpeg" alt="Tilachan Adhikari" class="profile-photo">
+            
+            <h2>Meet the Artist</h2>
+            <h3>Tilachan Adhikari</h3>
+            <p>With over 10 years of experience in photography and videography, I specialize in capturing life's most precious moments. From intimate wedding ceremonies to professional corporate events, I bring passion, creativity, and technical expertise to every project.</p>
+            <br>
+            <p>My journey began with a simple love for storytelling through images, and today I'm proud to have captured thousands of beautiful memories for families and businesses across Ilam region.</p>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Get In Touch</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                <h3>📞 Phone</h3>
+                <p>9815989898</p>
+            </div>
+            <div class="contact-item">
+                <h3>📧 Email</h3>
+                <p>hello@barbotephoto.com</p>
+            </div>
+            <div class="contact-item">
+                <h3>📍 Location</h3>
+                <p>Biblyate, Ilam<br>Nepal</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Gallery demo function
+        function showDemo(itemName) {
+            alert(`Demo: ${itemName}\n\nThis would normally open a lightbox or modal showing the full ${itemName.toLowerCase()}.`);
+        }
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.section, .service-card, .gallery-item, .frame-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
