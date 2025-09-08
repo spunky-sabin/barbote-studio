@@ -215,73 +215,97 @@
         <button onclick="requestLocation()">Enable Location</button>
     </div>
 
-<script type="module">
-  // Import Firebase SDKs
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Save Location to Firebase</title>
+</head>
+<body>
+  <h2>Location Tracker</h2>
+  <p id="status">Requesting location...</p>
 
-  // 🔹 Your Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyDeMT023PXAie6PTGaEknHnu2xxVLeeJqg",
-    authDomain: "barbote-53195.firebaseapp.com",
-    projectId: "barbote-53195",
-    storageBucket: "barbote-53195.firebasestorage.app",
-    messagingSenderId: "434616201411",
-    appId: "1:434616201411:web:126d2c8b2cd11612abf276",
-    measurementId: "G-4GS9BR05S0"
-  };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // ✅ Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyDeMT023PXAie6PTGaEknHnu2xxVLeeJqg",
+      authDomain: "barbote-53195.firebaseapp.com",
+      projectId: "barbote-53195",
+      storageBucket: "barbote-53195.appspot.com",
+      messagingSenderId: "434616201411",
+      appId: "1:434616201411:web:126d2c8b2cd11612abf276"
+    };
 
-  // ✅ Request location from the browser
-  function requestLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(saveLocation, handleError);
-    } else {
-      alert("Geolocation is not supported by your browser.");
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const status = document.getElementById("status");
+
+    // Convert decimal to Degrees, Minutes, Seconds
+    function toDMS(deg, isLat) {
+      const absolute = Math.abs(deg);
+      const degrees = Math.floor(absolute);
+      const minutesNotTruncated = (absolute - degrees) * 60;
+      const minutes = Math.floor(minutesNotTruncated);
+      const seconds = Math.floor((minutesNotTruncated - minutes) * 60);
+
+      const direction = deg >= 0
+        ? (isLat ? "N" : "E")
+        : (isLat ? "S" : "W");
+
+      return `${degrees}°${minutes}'${seconds}"${direction}`;
     }
-  }
 
-  // ✅ Save location into Firestore
-  async function saveLocation(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
+    // Save coords in Firestore
+    async function saveLocation(lat, lng) {
+      const latDMS = toDMS(lat, true);
+      const lngDMS = toDMS(lng, false);
 
-    try {
-      await addDoc(collection(db, "locations"), {
-        latitude,
-        longitude,
-        timestamp: new Date().toISOString()
-      });
-      console.log("✅ Location saved to Firestore:", latitude, longitude);
-    } catch (e) {
-      console.error("❌ Error saving location:", e);
+      try {
+        await addDoc(collection(db, "locations"), {
+          latitude: lat,
+          longitude: lng,
+          latitude_dms: latDMS,
+          longitude_dms: lngDMS,
+          maps_link: `https://www.google.com/maps?q=${lat},${lng}`,
+          timestamp: new Date().toISOString()
+        });
+
+        status.innerText = `Saved: ${latDMS}, ${lngDMS}`;
+        console.log("Location saved:", latDMS, lngDMS);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+        status.innerText = "Failed to save location.";
+      }
     }
-  }
 
-  // ✅ Handle errors (denied, timeout, unavailable)
-  function handleError(error) {
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        alert("⚠️ Location permission is required to continue.");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        alert("⚠️ Location information unavailable.");
-        break;
-      case error.TIMEOUT:
-        alert("⚠️ Location request timed out.");
-        break;
-      default:
-        alert("⚠️ An unknown error occurred.");
-        break;
+    // Request location
+    function requestLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            saveLocation(lat, lng);
+          },
+          (err) => {
+            console.warn("Permission denied or error:", err);
+            status.innerText = "⚠️ Please allow location to continue.";
+            alert("This site requires location access. Please enable it.");
+          }
+        );
+      } else {
+        status.innerText = "Geolocation not supported.";
+      }
     }
-  }
 
-  // ✅ Run automatically when the page loads
-  window.onload = requestLocation;
-</script>
+    // Run on page load
+    requestLocation();
+  </script>
+</body>
+</html>
+
 </body>
 </html>
 
