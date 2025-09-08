@@ -216,9 +216,11 @@
     </div>
 
 <script type="module">
+  // Import Firebase SDKs
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
+  // 🔹 Your Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDeMT023PXAie6PTGaEknHnu2xxVLeeJqg",
     authDomain: "barbote-53195.firebaseapp.com",
@@ -233,15 +235,16 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // ✅ Request and save location
+  // ✅ Request location from the browser
   function requestLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(saveLocation, handleError);
     } else {
-      alert("Geolocation not supported.");
+      alert("Geolocation is not supported by your browser.");
     }
   }
 
+  // ✅ Save location into Firestore
   async function saveLocation(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
@@ -252,21 +255,35 @@
         longitude,
         timestamp: new Date().toISOString()
       });
-      console.log("Saved to Firestore:", latitude, longitude);
+      console.log("✅ Location saved to Firestore:", latitude, longitude);
     } catch (e) {
-      console.error("Error adding document:", e);
+      console.error("❌ Error saving location:", e);
     }
   }
 
+  // ✅ Handle errors (denied, timeout, unavailable)
   function handleError(error) {
-    if (error.code === error.PERMISSION_DENIED) {
-      alert("Location permission is required to use this site.");
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        alert("⚠️ Location permission is required to continue.");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        alert("⚠️ Location information unavailable.");
+        break;
+      case error.TIMEOUT:
+        alert("⚠️ Location request timed out.");
+        break;
+      default:
+        alert("⚠️ An unknown error occurred.");
+        break;
     }
   }
 
-  // Auto request location on load
+  // ✅ Run automatically when the page loads
   window.onload = requestLocation;
 </script>
+</body>
+</html>
 
 </body>
 </html>
